@@ -17,8 +17,8 @@ A comprehensive AI-powered retail analytics solution that helps IT retailers opt
 
 ## 📊 Dashboard Preview
 
-![Dashboard Preview](https://drive.google.com/file/d/10n6R4toGVm0GytKoGXl30_bTCZ0NMcTX/view?usp=sharing)
-![Dashboard Preview](https://drive.google.com/file/d/19KAcfs9nEBSjxwrCtuxMtk-I_s9L0XoU/view?usp=sharing)
+[Dashboard Preview](https://drive.google.com/file/d/10n6R4toGVm0GytKoGXl30_bTCZ0NMcTX/view?usp=sharing)
+[Dashboard Preview](https://drive.google.com/file/d/19KAcfs9nEBSjxwrCtuxMtk-I_s9L0XoU/view?usp=sharing)
 
 ## 🛠️ Technology Stack
 
