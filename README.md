@@ -142,8 +142,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🔗 Links
 
 - [Project Demo Video](https://www.example.com/demo)
-- [Documentation](https://www.example.com/docs)
-- [Report Issue](https://github.com/yourusername/micro-logics-insights/issues)
+
 
 ---
 
