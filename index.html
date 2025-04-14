@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro Logics Insights Assistant</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .chat-container {
+            height: calc(100vh - 180px);
+        }
+        .chat-messages {
+            height: calc(100% - 60px);
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .user {
+            background-color: #e2f5ff;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        .assistant {
+            background-color: #f0f0f0;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        .loading-dots span {
+            animation: dots 1.5s infinite;
+        }
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+        @keyframes dots {
+            0%, 20% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div class="container mx-auto p-4">
+        <!-- Header -->
+        <header class="bg-white rounded-lg shadow-md p-4 mb-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="bg-blue-600 rounded-full w-10 h-10 flex items-center justify-center text-white font-bold mr-3">ML</div>
+                    <h1 class="text-xl font-bold text-blue-600">Micro Logics Insights Assistant</h1>
+                </div>
+                <div class="text-sm text-gray-500">Data-Driven Decision Support</div>
+            </div>
+        </header>
+
+        <!-- Chat Container -->
+        <div class="bg-white rounded-lg shadow-md p-4 chat-container">
+            <div id="chat-messages" class="chat-messages mb-4">
+                <div class="message assistant">
+                    <p>Welcome to Micro Logics Insights Assistant! I can help you analyze sales data, forecast demand, optimize inventory, and develop pricing strategies. How can I assist you today?</p>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="border-t pt-3">
+                <form id="chat-form" class="flex">
+                    <input type="text" id="user-input" class="flex-grow px-4 py-2 rounded-l-lg border focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ask about sales trends, inventory optimization, pricing..." required>
+                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-r-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        Send
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-4 text-center text-sm text-gray-500">
+            <p>Micro Logics Data Analytics Platform &copy; 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatForm = document.getElementById('chat-form');
+            const userInput = document.getElementById('user-input');
+            const chatMessages = document.getElementById('chat-messages');
+            
+            // Function to add a message to the chat
+            function addMessage(content, role) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', role);
+                messageDiv.innerHTML = `<p>${content}</p>`;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Function to show loading indicator
+            function showLoading() {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.classList.add('message', 'assistant', 'loading');
+                loadingDiv.innerHTML = `<p class="loading-dots">Thinking<span>.</span><span>.</span><span>.</span></p>`;
+                loadingDiv.id = 'loading-indicator';
+                chatMessages.appendChild(loadingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Function to hide loading indicator
+            function hideLoading() {
+                const loadingIndicator = document.getElementById('loading-indicator');
+                if (loadingIndicator) {
+                    loadingIndicator.remove();
+                }
+            }
+            
+            // Handle form submission
+            chatForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const userMessage = userInput.value.trim();
+                if (!userMessage) return;
+                
+                // Add user message to chat
+                addMessage(userMessage, 'user');
+                userInput.value = '';
+                
+                // Show loading indicator
+                showLoading();
+                
+                try {
+                    // Send message to backend
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ message: userMessage })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    // Hide loading indicator
+                    hideLoading();
+                    
+                    // Add bot response to chat
+                    if (data.response) {
+                        // Convert newlines to <br> tags for proper HTML display
+                        const formattedResponse = data.response.replace(/\n/g, '<br>');
+                        addMessage(formattedResponse, 'assistant');
+                    } else {
+                        addMessage('Sorry, I encountered an error processing your request.', 'assistant');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    hideLoading();
+                    addMessage('Sorry, there was an error connecting to the service.', 'assistant');
+                }
+            });
+            
+            // Focus input field on load
+            userInput.focus();
+        });
+    </script>
+</body>
+</html>
