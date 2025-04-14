@@ -1,6 +1,5 @@
 # Micro Logics Insights Assistant
 
-![License](https://drive.google.com/file/d/10BEe2S2P8Wpo0oG9EE03U4USXpAy4VtE/view?usp=drive_link)
 ![Python](https://img.shields.io/badge/python-3.8%2B-brightgreen.svg)
 ![Framework](https://img.shields.io/badge/framework-Flask%20%7C%20Dash-orange.svg)
 ![AI](https://img.shields.io/badge/AI-LangFlow-purple.svg)
